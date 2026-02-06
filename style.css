@@ -1,0 +1,70 @@
+body {
+  margin: 0;
+  background: #141414;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background: black;
+}
+
+header span {
+  color: #e50914;
+}
+
+#content {
+  padding: 15px;
+}
+
+.category {
+  margin-bottom: 30px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.channel {
+  min-width: 160px;
+  background: #222;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.channel img {
+  height: 70px;
+  object-fit: contain;
+  width: 100%;
+}
+
+.epg {
+  font-size: 12px;
+  color: #aaa;
+}
+
+#settingsModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.9);
+  padding: 20px;
+}
+
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+button {
+  background: #e50914;
+  border: none;
+  color: white;
+}

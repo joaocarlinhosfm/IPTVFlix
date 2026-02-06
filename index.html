@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPTVFlix</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>IPTV<span>Flix</span></h1>
+  <button id="btnSettings">⚙️</button>
+</header>
+
+<main id="content"></main>
+
+<!-- DEFINIÇÕES -->
+<div id="settingsModal">
+  <h2>Definições</h2>
+
+  <label>URL Lista M3U</label>
+  <input id="m3uUrl" placeholder="https://exemplo.com/lista.m3u">
+
+  <label>URL EPG (XMLTV)</label>
+  <input id="epgUrl" placeholder="https://exemplo.com/epg.xml">
+
+  <button onclick="importAll()">Importar</button>
+  <button onclick="closeSettings()">Fechar</button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
