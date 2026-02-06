@@ -3,14 +3,13 @@ const settings = document.getElementById("settingsModal");
 const searchInput = document.getElementById("searchInput");
 
 const LOCAL_STORAGE_KEY = "iptv_m3u_cache";
-
 let m3uCache = null;
 let loading = false;
 
 document.getElementById("btnSettings").onclick = () => settings.style.display = "block";
 function closeSettings() { settings.style.display = "none"; }
 
-/* =================== Inicializa =================== */
+/* ===== Inicializa ===== */
 window.addEventListener("load", () => {
   const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (saved) {
@@ -19,13 +18,12 @@ window.addEventListener("load", () => {
   }
 });
 
-/* =================== Importa M3U =================== */
+/* ===== Importa M3U ===== */
 async function importM3U() {
   const m3uUrl = document.getElementById("m3uUrl").value.trim();
   if (!m3uUrl) return alert("Coloca a URL da lista M3U");
 
   showLoading();
-
   try {
     const res = await fetch(m3uUrl);
     const text = await res.text();
@@ -42,7 +40,7 @@ async function importM3U() {
   }
 }
 
-/* =================== Parse M3U =================== */
+/* ===== Parse M3U ===== */
 function parseM3U(data) {
   const lines = data.split("\n");
   const categories = {};
@@ -68,7 +66,7 @@ function parseM3U(data) {
   return categories;
 }
 
-/* =================== Render + Pesquisa =================== */
+/* ===== Pesquisa ===== */
 searchInput.addEventListener("input", () => {
   if (!m3uCache) return;
   const term = searchInput.value.toLowerCase();
@@ -80,13 +78,17 @@ searchInput.addEventListener("input", () => {
   render(filtered);
 });
 
+/* ===== Render TV-style ===== */
 function render(categories) {
   content.innerHTML = "";
 
   Object.keys(categories).forEach(cat => {
     const section = document.createElement("div");
     section.className = "category";
-    section.innerHTML = `<h2>${cat}</h2>`;
+
+    const title = document.createElement("h2");
+    title.textContent = cat;
+    section.appendChild(title);
 
     const row = document.createElement("div");
     row.className = "row";
@@ -95,13 +97,8 @@ function render(categories) {
       const card = document.createElement("div");
       card.className = "channel fade-in";
 
-      const overlay = document.createElement("div");
-      overlay.className = "overlay";
-      overlay.textContent = "Abrindo no VLC…";
-      card.appendChild(overlay);
-
       const img = document.createElement("img");
-      img.src = ch.logo || "https://via.placeholder.com/160x80?text=No+Logo";
+      img.src = ch.logo || "https://via.placeholder.com/180x100?text=No+Logo";
       img.loading = "lazy";
       card.appendChild(img);
 
@@ -109,11 +106,7 @@ function render(categories) {
       name.textContent = ch.name;
       card.appendChild(name);
 
-      card.onclick = () => {
-        card.classList.add("active");
-        setTimeout(() => card.classList.remove("active"), 2000);
-        openVLC(ch.url);
-      };
+      card.onclick = () => openVLC(ch.url);
 
       row.appendChild(card);
     });
@@ -123,7 +116,7 @@ function render(categories) {
   });
 }
 
-/* =================== Feedback Loading =================== */
+/* ===== Loading ===== */
 function showLoading() {
   if (loading) return;
   loading = true;
@@ -132,8 +125,22 @@ function showLoading() {
 
 function hideLoading() { loading = false; }
 
-/* =================== VLC Android =================== */
+/* ===== VLC Android ===== */
 function openVLC(url) {
   const intent = `intent:${url}#Intent;package=org.videolan.vlc;type=video/*;end`;
   window.location.href = intent;
 }
+
+/* ===== Header desaparecer ao scroll ===== */
+let lastScroll = 0;
+const header = document.querySelector("header");
+
+window.addEventListener("scroll", () => {
+  const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+  if (currentScroll > lastScroll && currentScroll > 50) {
+    header.style.top = "-80px"; // ajusta altura se necessário
+  } else {
+    header.style.top = "0";
+  }
+  lastScroll = currentScroll;
+});
