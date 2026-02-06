@@ -1,32 +1,48 @@
+/* ================= CONFIG ================= */
+
 const content = document.getElementById("content");
 const settings = document.getElementById("settingsModal");
 
-let epgData = {};
 const EPG_CACHE_KEY = "iptv_epg_cache";
-const EPG_TIME_KEY = "iptv_epg_time";
-const EPG_TTL = 24 * 60 * 60 * 1000; // 24h
+const EPG_TIME_KEY  = "iptv_epg_time";
+const EPG_TTL       = 24 * 60 * 60 * 1000; // 24 horas
 
-document.getElementById("btnSettings").onclick = () =>
+let epgData = {};
+
+/* ================= UI ================= */
+
+document.getElementById("btnSettings").onclick = () => {
   settings.style.display = "block";
+};
 
 function closeSettings() {
   settings.style.display = "none";
 }
 
 async function importAll() {
-  const m3u = document.getElementById("m3uUrl").value;
-  const epg = document.getElementById("epgUrl").value;
+  const m3uUrl = document.getElementById("m3uUrl").value.trim();
+  const epgUrl = document.getElementById("epgUrl").value.trim();
 
-  if (epg) await loadEPG(epg);
-  if (m3u) await loadM3U(m3u);
+  if (epgUrl) await loadEPG(epgUrl);
+  if (m3uUrl) await loadM3U(m3uUrl);
 
   closeSettings();
+}
+
+/* ================= SAFE FETCH ================= */
+
+async function fetchSafe(url) {
+  if (url.startsWith("http://")) {
+    const proxy = "https://api.allorigins.win/raw?url=";
+    return fetch(proxy + encodeURIComponent(url));
+  }
+  return fetch(url);
 }
 
 /* ================= M3U ================= */
 
 async function loadM3U(url) {
-  const res = await fetch(url);
+  const res = await fetchSafe(url);
   const text = await res.text();
   parseM3U(text);
 }
@@ -34,20 +50,24 @@ async function loadM3U(url) {
 function parseM3U(data) {
   const lines = data.split("\n");
   const categories = {};
-  let current = {};
+  let current = null;
 
-  lines.forEach(l => {
-    if (l.startsWith("#EXTINF")) {
+  lines.forEach(line => {
+    line = line.trim();
+
+    if (line.startsWith("#EXTINF")) {
       current = {
-        name: l.split(",")[1],
-        group: l.match(/group-title="([^"]+)"/)?.[1] || "Outros",
-        logo: l.match(/tvg-logo="([^"]+)"/)?.[1] || "",
-        tvgId: l.match(/tvg-id="([^"]+)"/)?.[1] || null
+        name: line.split(",")[1] || "Canal",
+        group: line.match(/group-title="([^"]+)"/)?.[1] || "Outros",
+        logo: line.match(/tvg-logo="([^"]+)"/)?.[1] || "",
+        tvgId: line.match(/tvg-id="([^"]+)"/)?.[1] || null
       };
-    } else if (l.startsWith("http")) {
-      current.url = l.trim();
+    }
+    else if (line.startsWith("http") && current) {
+      current.url = line;
       categories[current.group] ??= [];
       categories[current.group].push(current);
+      current = null;
     }
   });
 
@@ -58,24 +78,27 @@ function parseM3U(data) {
 
 async function loadEPG(url) {
   const cached = localStorage.getItem(EPG_CACHE_KEY);
-  const time = localStorage.getItem(EPG_TIME_KEY);
+  const time   = localStorage.getItem(EPG_TIME_KEY);
 
   if (cached && time && Date.now() - time < EPG_TTL) {
     epgData = JSON.parse(cached);
     return;
   }
 
-  const res = await fetch(url);
+  const res = await fetchSafe(url);
   const xmlText = await res.text();
   const xml = new DOMParser().parseFromString(xmlText, "text/xml");
 
   epgData = {};
+
   xml.querySelectorAll("programme").forEach(p => {
-    const ch = p.getAttribute("channel");
-    epgData[ch] ??= [];
-    epgData[ch].push({
+    const channel = p.getAttribute("channel");
+    if (!channel) return;
+
+    epgData[channel] ??= [];
+    epgData[channel].push({
       start: p.getAttribute("start"),
-      stop: p.getAttribute("stop"),
+      stop:  p.getAttribute("stop"),
       title: p.querySelector("title")?.textContent || ""
     });
   });
@@ -84,14 +107,15 @@ async function loadEPG(url) {
   localStorage.setItem(EPG_TIME_KEY, Date.now());
 }
 
-function currentProgram(tvgId) {
-  if (!epgData[tvgId]) return "Sem EPG";
+function getCurrentProgram(tvgId) {
+  if (!tvgId || !epgData[tvgId]) return "Sem EPG";
 
   const now = new Date();
+
   const prog = epgData[tvgId].find(p => {
-    const s = parseEPGDate(p.start);
-    const e = parseEPGDate(p.stop);
-    return now >= s && now <= e;
+    const start = parseEPGDate(p.start);
+    const stop  = parseEPGDate(p.stop);
+    return now >= start && now <= stop;
   });
 
   return prog ? prog.title : "Sem emissão";
@@ -99,40 +123,43 @@ function currentProgram(tvgId) {
 
 function parseEPGDate(s) {
   return new Date(
-    s.substr(0,4),
-    s.substr(4,2)-1,
-    s.substr(6,2),
-    s.substr(8,2),
-    s.substr(10,2)
+    s.substring(0,4),
+    s.substring(4,6) - 1,
+    s.substring(6,8),
+    s.substring(8,10),
+    s.substring(10,12)
   );
 }
 
-/* ================= UI ================= */
+/* ================= RENDER ================= */
 
 function render(categories) {
   content.innerHTML = "";
+
   Object.keys(categories).forEach(cat => {
-    const sec = document.createElement("div");
-    sec.className = "category";
-    sec.innerHTML = `<h2>${cat}</h2>`;
+    const section = document.createElement("div");
+    section.className = "category";
+    section.innerHTML = `<h2>${cat}</h2>`;
 
     const row = document.createElement("div");
     row.className = "row";
 
     categories[cat].forEach(ch => {
-      const d = document.createElement("div");
-      d.className = "channel";
-      d.innerHTML = `
+      const card = document.createElement("div");
+      card.className = "channel";
+
+      card.innerHTML = `
         <img src="${ch.logo}">
         <strong>${ch.name}</strong>
-        <div class="epg">${currentProgram(ch.tvgId)}</div>
+        <div class="epg">${getCurrentProgram(ch.tvgId)}</div>
       `;
-      d.onclick = () => openVLC(ch.url);
-      row.appendChild(d);
+
+      card.onclick = () => openVLC(ch.url);
+      row.appendChild(card);
     });
 
-    sec.appendChild(row);
-    content.appendChild(sec);
+    section.appendChild(row);
+    content.appendChild(section);
   });
 }
 
