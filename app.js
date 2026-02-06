@@ -9,7 +9,6 @@ let loading = false;
 document.getElementById("btnSettings").onclick = () => settings.style.display = "block";
 function closeSettings() { settings.style.display = "none"; }
 
-/* ===== Inicializa ===== */
 window.addEventListener("load", () => {
   const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (saved) {
@@ -18,7 +17,6 @@ window.addEventListener("load", () => {
   }
 });
 
-/* ===== Importa M3U ===== */
 async function importM3U() {
   const m3uUrl = document.getElementById("m3uUrl").value.trim();
   if (!m3uUrl) return alert("Coloca a URL da lista M3U");
@@ -40,7 +38,6 @@ async function importM3U() {
   }
 }
 
-/* ===== Parse M3U ===== */
 function parseM3U(data) {
   const lines = data.split("\n");
   const categories = {};
@@ -66,7 +63,6 @@ function parseM3U(data) {
   return categories;
 }
 
-/* ===== Pesquisa ===== */
 searchInput.addEventListener("input", () => {
   if (!m3uCache) return;
   const term = searchInput.value.toLowerCase();
@@ -78,7 +74,6 @@ searchInput.addEventListener("input", () => {
   render(filtered);
 });
 
-/* ===== Render TV-style horizontal ===== */
 function render(categories) {
   content.innerHTML = "";
 
@@ -116,16 +111,13 @@ function render(categories) {
   });
 }
 
-/* ===== Loading ===== */
 function showLoading() {
   if (loading) return;
   loading = true;
   content.innerHTML = `<div class="loading">Carregando lista...</div>`;
 }
-
 function hideLoading() { loading = false; }
 
-/* ===== VLC Android ===== */
 function openVLC(url) {
   const intent = `intent:${url}#Intent;package=org.videolan.vlc;type=video/*;end`;
   window.location.href = intent;
