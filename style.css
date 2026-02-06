@@ -1,7 +1,7 @@
 body {
   margin: 0;
   background: #141414;
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: white;
 }
 
@@ -32,7 +32,6 @@ header button {
   border-radius: 4px;
 }
 
-/* Barra de pesquisa */
 #searchContainer {
   padding: 10px 20px;
   background: #1a1a1a;
@@ -48,12 +47,10 @@ header button {
   color: white;
 }
 
-/* Main */
 #content {
   padding: 20px;
 }
 
-/* Categoria */
 .category {
   margin-bottom: 30px;
 }
@@ -63,7 +60,6 @@ header button {
   font-size: 18px;
 }
 
-/* Linha de canais */
 .row {
   display: flex;
   gap: 10px;
@@ -71,7 +67,6 @@ header button {
   padding-bottom: 5px;
 }
 
-/* Canal */
 .channel {
   min-width: 160px;
   background: #222;
@@ -79,13 +74,18 @@ header button {
   padding: 10px;
   cursor: pointer;
   text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s, box-shadow 0.3s;
   position: relative;
+  opacity: 0;
+}
+
+.channel.fade-in {
+  animation: fadeIn 0.5s forwards;
 }
 
 .channel:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.7);
 }
 
 .channel img {
@@ -94,12 +94,13 @@ header button {
   object-fit: contain;
   margin-bottom: 8px;
 }
+
 .channel strong {
   display: block;
   font-size: 14px;
 }
 
-/* Feedback ao clicar */
+/* Overlay ao clicar */
 .channel .overlay {
   position: absolute;
   inset: 0;
@@ -111,14 +112,14 @@ header button {
   font-size: 12px;
   border-radius: 6px;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity 0.3s;
 }
 
 .channel.active .overlay {
   opacity: 1;
 }
 
-/* Modal de definições */
+/* Modal */
 #settingsModal {
   display: none;
   position: fixed;
@@ -128,9 +129,7 @@ header button {
   overflow-y: auto;
 }
 
-#settingsModal h2 {
-  margin-top: 0;
-}
+#settingsModal h2 { margin-top: 0; }
 
 #settingsModal input {
   width: 100%;
@@ -155,6 +154,17 @@ header button {
   font-size: 14px;
 }
 
-#settingsModal button:hover {
-  background: #b00610;
+#settingsModal button:hover { background: #b00610; }
+
+/* Loading */
+.loading {
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  padding: 50px 0;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  to { opacity: 1; }
 }
