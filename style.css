@@ -1,4 +1,3 @@
-/* ================= BODY ================= */
 body {
   margin: 0;
   background: #141414;
@@ -6,7 +5,6 @@ body {
   color: white;
 }
 
-/* ================= HEADER ================= */
 header {
   display: flex;
   justify-content: space-between;
@@ -34,12 +32,28 @@ header button {
   border-radius: 4px;
 }
 
-/* ================= MAIN ================= */
+/* Barra de pesquisa */
+#searchContainer {
+  padding: 10px 20px;
+  background: #1a1a1a;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+  font-size: 14px;
+  background: #222;
+  color: white;
+}
+
+/* Main */
 #content {
   padding: 20px;
 }
 
-/* ================= CATEGORIA ================= */
+/* Categoria */
 .category {
   margin-bottom: 30px;
 }
@@ -49,7 +63,7 @@ header button {
   font-size: 18px;
 }
 
-/* ================= LINHA DE CANAIS ================= */
+/* Linha de canais */
 .row {
   display: flex;
   gap: 10px;
@@ -57,7 +71,7 @@ header button {
   padding-bottom: 5px;
 }
 
-/* ================= CANAL ================= */
+/* Canal */
 .channel {
   min-width: 160px;
   background: #222;
@@ -66,6 +80,7 @@ header button {
   cursor: pointer;
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
 }
 
 .channel:hover {
@@ -79,13 +94,31 @@ header button {
   object-fit: contain;
   margin-bottom: 8px;
 }
-
 .channel strong {
   display: block;
   font-size: 14px;
 }
 
-/* ================= MODAL DE DEFINIÇÕES ================= */
+/* Feedback ao clicar */
+.channel .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.channel.active .overlay {
+  opacity: 1;
+}
+
+/* Modal de definições */
 #settingsModal {
   display: none;
   position: fixed;
@@ -106,6 +139,8 @@ header button {
   margin-bottom: 12px;
   border: none;
   border-radius: 4px;
+  background: #222;
+  color: white;
 }
 
 #settingsModal button {
