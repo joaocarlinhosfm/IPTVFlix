@@ -17,17 +17,11 @@ header {
   position: sticky;
   top: 0;
   z-index: 10;
+  transition: top 0.3s ease-in-out; /* animação suave ao desaparecer */
 }
 
-header h1 {
-  margin: 0;
-  font-size: 26px;
-}
-
-header h1 span {
-  color: #e50914;
-  font-weight: bold;
-}
+header h1 { font-size: 26px; margin: 0; }
+header h1 span { color: #e50914; font-weight: bold; }
 
 header button {
   background: #e50914;
@@ -38,15 +32,10 @@ header button {
   border-radius: 5px;
   transition: 0.3s;
 }
-
 header button:hover { background: #b00610; }
 
 /* ===== SEARCH ===== */
-#searchContainer {
-  padding: 10px 20px;
-  background: #1a1a1a;
-}
-
+#searchContainer { padding: 10px 20px; background: #1a1a1a; }
 #searchInput {
   width: 100%;
   padding: 10px;
@@ -60,21 +49,11 @@ header button:hover { background: #b00610; }
 /* ===== MAIN CONTENT ===== */
 #content {
   padding: 20px;
-  display: flex;
-  gap: 30px; /* categorias lado a lado */
-  overflow-x: auto;
-  scroll-behavior: smooth;
 }
 
-/* ===== CATEGORY CARDS ===== */
-.category {
-  min-width: 320px;
-}
-
-.category h2 {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
+/* ===== CATEGORY ===== */
+.category { margin-bottom: 30px; }
+.category h2 { font-size: 18px; margin-bottom: 10px; }
 
 /* ===== CARDS ROW ===== */
 .row {
@@ -82,7 +61,11 @@ header button:hover { background: #b00610; }
   gap: 12px;
   overflow-x: auto;
   scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 5px;
 }
+.row::-webkit-scrollbar { height: 8px; }
+.row::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
 
 /* ===== CHANNEL CARDS ===== */
 .channel {
@@ -92,15 +75,13 @@ header button:hover { background: #b00610; }
   padding: 10px;
   cursor: pointer;
   text-align: center;
-  position: relative;
   transform: translateY(20px);
   opacity: 0;
   transition: transform 0.3s, box-shadow 0.3s;
+  scroll-snap-align: start;
 }
 
-.channel.fade-in {
-  animation: fadeUp 0.5s forwards;
-}
+.channel.fade-in { animation: fadeUp 0.5s forwards; }
 
 .channel:hover {
   transform: translateY(0) scale(1.05);
@@ -115,27 +96,7 @@ header button:hover { background: #b00610; }
   border-radius: 5px;
 }
 
-.channel strong {
-  display: block;
-  font-size: 14px;
-}
-
-/* Overlay ao clicar */
-.channel .overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-  border-radius: 10px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.channel.active .overlay { opacity: 1; }
+.channel strong { display: block; font-size: 14px; }
 
 /* ===== MODAL ===== */
 #settingsModal {
@@ -152,7 +113,8 @@ header button:hover { background: #b00610; }
 #settingsModal input {
   width: 100%;
   padding: 10px;
-  margin: 8px 0 12px 0;
+  margin-top: 8px;
+  margin-bottom: 12px;
   border-radius: 6px;
   border: none;
   background: #222;
@@ -181,6 +143,4 @@ header button:hover { background: #b00610; }
 }
 
 /* ===== ANIMAÇÕES ===== */
-@keyframes fadeUp {
-  to { transform: translateY(0); opacity: 1; }
-}
+@keyframes fadeUp { to { transform: translateY(0); opacity: 1; } }
