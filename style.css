@@ -1,21 +1,27 @@
+/* ===== BODY ===== */
 body {
   margin: 0;
-  background: #141414;
-  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(180deg, #141414 0%, #1a1a1a 100%);
+  font-family: 'Poppins', sans-serif;
   color: white;
+  overflow-x: hidden;
 }
 
+/* ===== HEADER ===== */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
-  background: black;
+  background: #000;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 header h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 26px;
 }
 
 header h1 span {
@@ -27,11 +33,15 @@ header button {
   background: #e50914;
   border: none;
   color: white;
-  padding: 10px;
+  padding: 10px 14px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 5px;
+  transition: 0.3s;
 }
 
+header button:hover { background: #b00610; }
+
+/* ===== SEARCH ===== */
 #searchContainer {
   padding: 10px 20px;
   background: #1a1a1a;
@@ -40,59 +50,69 @@ header button {
 #searchInput {
   width: 100%;
   padding: 10px;
-  border-radius: 4px;
+  border-radius: 6px;
   border: none;
   font-size: 14px;
   background: #222;
   color: white;
 }
 
+/* ===== MAIN CONTENT ===== */
 #content {
   padding: 20px;
+  display: flex;
+  gap: 30px; /* categorias lado a lado */
+  overflow-x: auto;
+  scroll-behavior: smooth;
 }
 
+/* ===== CATEGORY CARDS ===== */
 .category {
-  margin-bottom: 30px;
+  min-width: 320px;
 }
 
 .category h2 {
-  margin-bottom: 10px;
   font-size: 18px;
+  margin-bottom: 10px;
 }
 
+/* ===== CARDS ROW ===== */
 .row {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   overflow-x: auto;
-  padding-bottom: 5px;
+  scroll-behavior: smooth;
 }
 
+/* ===== CHANNEL CARDS ===== */
 .channel {
-  min-width: 160px;
+  min-width: 180px;
   background: #222;
-  border-radius: 6px;
+  border-radius: 10px;
   padding: 10px;
   cursor: pointer;
   text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
   position: relative;
+  transform: translateY(20px);
   opacity: 0;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .channel.fade-in {
-  animation: fadeIn 0.5s forwards;
+  animation: fadeUp 0.5s forwards;
 }
 
 .channel:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.7);
+  transform: translateY(0) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.7);
 }
 
 .channel img {
   width: 100%;
-  height: 80px;
+  height: 100px;
   object-fit: contain;
   margin-bottom: 8px;
+  border-radius: 5px;
 }
 
 .channel strong {
@@ -104,22 +124,20 @@ header button {
 .channel .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.7);
   color: white;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   font-size: 12px;
-  border-radius: 6px;
+  border-radius: 10px;
   opacity: 0;
   transition: opacity 0.3s;
 }
 
-.channel.active .overlay {
-  opacity: 1;
-}
+.channel.active .overlay { opacity: 1; }
 
-/* Modal */
+/* ===== MODAL ===== */
 #settingsModal {
   display: none;
   position: fixed;
@@ -127,17 +145,16 @@ header button {
   background: rgba(0,0,0,0.95);
   padding: 20px;
   overflow-y: auto;
+  z-index: 20;
 }
 
 #settingsModal h2 { margin-top: 0; }
-
 #settingsModal input {
   width: 100%;
   padding: 10px;
-  margin-top: 8px;
-  margin-bottom: 12px;
+  margin: 8px 0 12px 0;
+  border-radius: 6px;
   border: none;
-  border-radius: 4px;
   background: #222;
   color: white;
 }
@@ -147,16 +164,15 @@ header button {
   padding: 12px;
   margin-top: 10px;
   background: #e50914;
-  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
+  color: white;
   cursor: pointer;
-  font-size: 14px;
 }
 
 #settingsModal button:hover { background: #b00610; }
 
-/* Loading */
+/* ===== LOADING ===== */
 .loading {
   color: white;
   font-size: 16px;
@@ -164,7 +180,7 @@ header button {
   padding: 50px 0;
 }
 
-/* Fade-in animation */
-@keyframes fadeIn {
-  to { opacity: 1; }
+/* ===== ANIMAÇÕES ===== */
+@keyframes fadeUp {
+  to { transform: translateY(0); opacity: 1; }
 }
