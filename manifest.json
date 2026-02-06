@@ -1,7 +1,7 @@
 {
   "name": "IPTVFlix",
   "short_name": "IPTVFlix",
-  "description": "Netflix das IPTV com EPG offline e reprodução no VLC",
+  "description": "Netflix das IPTV com reprodução no VLC",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -10,12 +10,12 @@
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/netflix.png",
+      "src": "https://i.ibb.co/tPh2P5GF/red-large-netflix-logo-text-701751694792625tjldcsq74b.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/netflix.png",
+      "src": "https://i.ibb.co/tPh2P5GF/red-large-netflix-logo-text-701751694792625tjldcsq74b.png",
       "sizes": "512x512",
       "type": "image/png"
     }
