@@ -78,7 +78,7 @@ searchInput.addEventListener("input", () => {
   render(filtered);
 });
 
-/* ===== Render TV-style ===== */
+/* ===== Render TV-style horizontal ===== */
 function render(categories) {
   content.innerHTML = "";
 
@@ -98,7 +98,7 @@ function render(categories) {
       card.className = "channel fade-in";
 
       const img = document.createElement("img");
-      img.src = ch.logo || "https://via.placeholder.com/180x100?text=No+Logo";
+      img.src = ch.logo || "https://via.placeholder.com/220x100?text=No+Logo";
       img.loading = "lazy";
       card.appendChild(img);
 
@@ -138,7 +138,7 @@ const header = document.querySelector("header");
 window.addEventListener("scroll", () => {
   const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
   if (currentScroll > lastScroll && currentScroll > 50) {
-    header.style.top = "-80px"; // ajusta altura se necessário
+    header.style.top = "-80px";
   } else {
     header.style.top = "0";
   }
