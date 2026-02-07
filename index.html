@@ -18,39 +18,30 @@
 <!-- APP -->
 <div id="app">
 
-  <header id="header">
+  <header>
     <h1>IPTVFlix</h1>
-    <button id="settingsBtn" tabindex="0">⚙</button>
+    <button id="settingsBtn" tabindex="0" aria-label="Definições">⚙</button>
   </header>
 
-  <main id="content">
+  <!-- WELCOME -->
+  <section id="welcome">
+    <h2>Bem-vindo ao IPTVFlix</h2>
+    <p>Importa a tua lista M3U para começares a ver TV.</p>
+    <button id="openSettings">Importar lista</button>
+  </section>
 
-    <section class="category">
-      <h2>Generalistas</h2>
-      <div class="row">
-        <div class="channel" tabindex="0" data-url="http://stream1.m3u8">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/RTP1_logo.svg">
-          <strong>RTP 1</strong>
-        </div>
+  <!-- CONTENT -->
+  <main id="content"></main>
+</div>
 
-        <div class="channel" tabindex="0" data-url="http://stream2.m3u8">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/SIC_logo_2020.svg">
-          <strong>SIC</strong>
-        </div>
-      </div>
-    </section>
-
-    <section class="category">
-      <h2>Desporto</h2>
-      <div class="row">
-        <div class="channel" tabindex="0" data-url="http://stream3.m3u8">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/TV_icon.png">
-          <strong>Sport TV</strong>
-        </div>
-      </div>
-    </section>
-
-  </main>
+<!-- SETTINGS MODAL -->
+<div id="settingsModal">
+  <div class="modal">
+    <h3>Configurações</h3>
+    <input id="m3uUrl" type="url" placeholder="URL da lista M3U">
+    <button id="importBtn">Importar</button>
+    <button id="closeSettings">Fechar</button>
+  </div>
 </div>
 
 <script src="app.js"></script>
