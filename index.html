@@ -2,36 +2,55 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-  <title>IPTVFlix TV</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPTVFlix</title>
 
-  <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#000000">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-orientation" content="landscape">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-  <h1>IPTV<span>Flix</span></h1>
-  <button id="btnSettings">⚙️</button>
-</header>
-
-<div id="searchContainer">
-  <input id="searchInput" type="text" placeholder="Pesquisar canal...">
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="logo">IPTV<span>FLIX</span></div>
 </div>
 
-<main id="content"></main>
+<!-- APP -->
+<div id="app">
 
-<div id="settingsModal">
-  <h2>Definições</h2>
-  <label>URL Lista M3U</label>
-  <input id="m3uUrl" placeholder="https://exemplo.com/lista.m3u">
+  <header id="header">
+    <h1>IPTVFlix</h1>
+  </header>
 
-  <button onclick="importM3U()">Importar</button>
-  <button onclick="closeSettings()">Fechar</button>
+  <main id="content">
+
+    <!-- CATEGORIA -->
+    <section class="category">
+      <h2>Generalistas</h2>
+      <div class="row">
+        <div class="channel" tabindex="0" data-url="http://stream1.m3u8">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/RTP1_logo.svg">
+          <strong>RTP 1</strong>
+        </div>
+
+        <div class="channel" tabindex="0" data-url="http://stream2.m3u8">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/SIC_logo_2020.svg">
+          <strong>SIC</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="category">
+      <h2>Desporto</h2>
+      <div class="row">
+        <div class="channel" tabindex="0" data-url="http://stream3.m3u8">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/TV_icon.png">
+          <strong>Sport TV</strong>
+        </div>
+      </div>
+    </section>
+
+  </main>
 </div>
 
 <script src="app.js"></script>
