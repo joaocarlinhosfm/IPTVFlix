@@ -6,14 +6,12 @@ html, body {
   margin: 0;
   width: 100%;
   height: 100%;
-  background: #000;
   font-family: 'Poppins', sans-serif;
-  overflow: hidden;
+  background: #000;
   color: #fff;
 }
 
-/* ================= SPLASH ================= */
-
+/* SPLASH */
 #splash {
   position: fixed;
   inset: 0;
@@ -25,26 +23,14 @@ html, body {
 }
 
 .logo {
-  font-size: 52px;
+  font-size: 48px;
   font-weight: 700;
   color: #e50914;
   letter-spacing: 2px;
-  animation: splashAnim 1.8s ease forwards;
 }
 
-.logo span {
-  color: #fff;
-}
-
-@keyframes splashAnim {
-  0% { opacity: 0; transform: scale(1.4); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* ================= APP ================= */
-
+/* APP */
 #app {
-  display: none;
   width: 100%;
   height: 100%;
   background: linear-gradient(180deg, #141414, #1b1b1b);
@@ -56,7 +42,15 @@ header {
   padding: 0 24px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background: #000;
+}
+
+#settingsBtn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
 }
 
 /* CONTENT */
@@ -66,34 +60,30 @@ header {
   padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 32px;
 }
 
 /* CATEGORY */
 .category h2 {
   margin: 0 0 10px 6px;
-  font-size: 20px;
 }
 
 /* ROW */
 .row {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   overflow-x: auto;
   scroll-behavior: smooth;
 }
 
-/* CHANNEL CARD */
+/* CHANNEL */
 .channel {
-  min-width: 220px;
-  height: 140px;
   background: #222;
   border-radius: 14px;
   padding: 10px;
   text-align: center;
   cursor: pointer;
   outline: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .channel img {
@@ -108,25 +98,54 @@ header {
   font-size: 14px;
 }
 
-/* ANDROID TV FOCUS */
-.channel:focus {
-  transform: scale(1.15);
-  box-shadow: 0 0 0 3px #e50914, 0 12px 30px rgba(0,0,0,0.8);
+/* ========== MOBILE MODE ========== */
+
+body.mobile-mode .channel {
+  min-width: 150px;
+  height: 120px;
+}
+
+body.mobile-mode .category h2 {
+  font-size: 16px;
+}
+
+body.mobile-mode #settingsBtn {
+  font-size: 22px;
+}
+
+/* ========== TV MODE (10-foot UI) ========== */
+
+body.tv-mode header {
+  height: 72px;
+  padding: 0 40px;
+}
+
+body.tv-mode .category h2 {
+  font-size: 24px;
+}
+
+body.tv-mode .row {
+  gap: 20px;
+}
+
+body.tv-mode .channel {
+  min-width: 260px;
+  height: 160px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+body.tv-mode .channel:focus {
+  transform: scale(1.18);
+  box-shadow: 0 0 0 4px #e50914,
+              0 18px 40px rgba(0,0,0,0.9);
   z-index: 2;
 }
 
-/* ================= ORIENTATION ================= */
-
-/* PORTRAIT → só splash */
-@media (orientation: portrait) {
-  #app {
-    display: none;
-  }
+body.tv-mode #settingsBtn {
+  font-size: 28px;
 }
 
-/* LANDSCAPE → app */
-@media (orientation: landscape) {
-  #app {
-    display: block;
-  }
+body.tv-mode #settingsBtn:focus {
+  box-shadow: 0 0 0 3px #e50914;
+  border-radius: 6px;
 }
