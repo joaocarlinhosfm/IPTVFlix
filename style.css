@@ -1,177 +1,132 @@
-/* ===== BODY ===== */
+* {
+  box-sizing: border-box;
+}
+
 html, body {
   margin: 0;
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
-  font-family: 'Poppins', sans-serif;
-  color: white;
-  background: linear-gradient(180deg, #141414 0%, #1a1a1a 100%);
-  overflow: hidden;
-}
-
-/* ===== Forçar landscape mesmo em portrait ===== */
-@media (orientation: portrait) {
-  body {
-    transform: rotate(90deg);
-    transform-origin: left top;
-    width: 100vh;
-    height: 100vw;
-    position: absolute;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-  }
-
-  #content, header, #searchContainer {
-    /* mantém visível, girado junto com o body */
-  }
-}
-
-/* ===== HEADER ===== */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background: #000;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  transition: top 0.3s ease-in-out;
-}
-
-header h1 { font-size: 26px; margin: 0; }
-header h1 span { color: #e50914; font-weight: bold; }
-
-header button {
-  background: #e50914;
-  border: none;
-  color: white;
-  padding: 10px 14px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: 0.3s;
-}
-header button:hover { background: #b00610; }
-
-/* ===== SEARCH ===== */
-#searchContainer {
-  padding: 10px 20px;
-  background: #1a1a1a;
-}
-#searchInput {
   width: 100%;
-  padding: 10px;
-  border-radius: 6px;
-  border: none;
-  font-size: 14px;
-  background: #222;
-  color: white;
+  height: 100%;
+  background: #000;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  color: #fff;
 }
 
-/* ===== MAIN CONTENT ===== */
+/* ================= SPLASH ================= */
+
+#splash {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.logo {
+  font-size: 52px;
+  font-weight: 700;
+  color: #e50914;
+  letter-spacing: 2px;
+  animation: splashAnim 1.8s ease forwards;
+}
+
+.logo span {
+  color: #fff;
+}
+
+@keyframes splashAnim {
+  0% { opacity: 0; transform: scale(1.4); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ================= APP ================= */
+
+#app {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #141414, #1b1b1b);
+}
+
+/* HEADER */
+header {
+  height: 64px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  background: #000;
+}
+
+/* CONTENT */
 #content {
-  padding: 20px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  height: calc(100vh - 120px);
-  overflow-y: auto;
+  gap: 36px;
 }
 
-/* ===== CATEGORY ===== */
+/* CATEGORY */
 .category h2 {
-  font-size: 18px;
-  margin-bottom: 10px;
+  margin: 0 0 10px 6px;
+  font-size: 20px;
 }
 
-/* ===== CARDS ROW ===== */
+/* ROW */
 .row {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   overflow-x: auto;
   scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 5px;
 }
-.row::-webkit-scrollbar { height: 8px; }
-.row::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
 
-/* ===== CHANNEL CARDS ===== */
+/* CHANNEL CARD */
 .channel {
   min-width: 220px;
   height: 140px;
   background: #222;
-  border-radius: 10px;
+  border-radius: 14px;
   padding: 10px;
-  cursor: pointer;
   text-align: center;
-  transform: translateY(20px);
-  opacity: 0;
-  transition: transform 0.3s, box-shadow 0.3s;
-  scroll-snap-align: start;
-}
-
-.channel.fade-in { animation: fadeUp 0.5s forwards; }
-
-.channel:hover {
-  transform: translateY(0) scale(1.05);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .channel img {
   width: 100%;
-  height: 100px;
+  height: 90px;
   object-fit: contain;
-  margin-bottom: 8px;
-  border-radius: 5px;
 }
 
-.channel strong { display: block; font-size: 14px; }
-
-/* ===== MODAL ===== */
-#settingsModal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.95);
-  padding: 20px;
-  overflow-y: auto;
-  z-index: 20;
+.channel strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
 }
 
-#settingsModal h2 { margin-top: 0; }
-#settingsModal input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-  margin-bottom: 12px;
-  border-radius: 6px;
-  border: none;
-  background: #222;
-  color: white;
+/* ANDROID TV FOCUS */
+.channel:focus {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 3px #e50914, 0 12px 30px rgba(0,0,0,0.8);
+  z-index: 2;
 }
 
-#settingsModal button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  background: #e50914;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
-}
-#settingsModal button:hover { background: #b00610; }
+/* ================= ORIENTATION ================= */
 
-/* ===== LOADING ===== */
-.loading {
-  color: white;
-  font-size: 16px;
-  text-align: center;
-  padding: 50px 0;
+/* PORTRAIT → só splash */
+@media (orientation: portrait) {
+  #app {
+    display: none;
+  }
 }
 
-/* ===== ANIMAÇÕES ===== */
-@keyframes fadeUp { to { transform: translateY(0); opacity: 1; } }
+/* LANDSCAPE → app */
+@media (orientation: landscape) {
+  #app {
+    display: block;
+  }
+}
