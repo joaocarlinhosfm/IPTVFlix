@@ -17,25 +17,20 @@ window.addEventListener('load', () => {
 
 /* STATE */
 function checkState() {
-  const hasList = localStorage.getItem('m3uList');
-  if (!hasList) {
+  const data = localStorage.getItem('iptvData');
+  if (!data) {
     welcome.style.display = 'flex';
     content.style.display = 'none';
   } else {
     welcome.style.display = 'none';
     content.style.display = 'block';
-    renderChannels(JSON.parse(hasList));
+    renderCategories(JSON.parse(data));
   }
 }
 
 /* SETTINGS */
-function openModal() {
-  settingsModal.style.display = 'flex';
-}
-
-function closeModal() {
-  settingsModal.style.display = 'none';
-}
+function openModal() { settingsModal.style.display = 'flex'; }
+function closeModal() { settingsModal.style.display = 'none'; }
 
 settingsBtn.onclick = openModal;
 openSettings.onclick = openModal;
@@ -49,7 +44,8 @@ importBtn.onclick = async () => {
   try {
     const res = await fetch(url);
     const text = await res.text();
-    localStorage.setItem('m3uList', JSON.stringify(parseM3U(text)));
+    const parsed = parseM3U(text);
+    localStorage.setItem('iptvData', JSON.stringify(parsed));
     closeModal();
     checkState();
   } catch {
@@ -57,36 +53,63 @@ importBtn.onclick = async () => {
   }
 };
 
-/* M3U PARSER (simples) */
+/* M3U PARSER COM CATEGORIAS */
 function parseM3U(text) {
   const lines = text.split('\n');
-  const channels = [];
+  const categories = {};
+
+  let current = null;
 
   for (let i = 0; i < lines.length; i++) {
     if (lines[i].startsWith('#EXTINF')) {
-      channels.push({
-        name: lines[i].split(',')[1],
-        url: lines[i + 1]
+      const name = lines[i].split(',')[1]?.trim() || 'Sem nome';
+      const groupMatch = lines[i].match(/group-title="([^"]+)"/);
+      const group = groupMatch ? groupMatch[1] : 'Outros';
+
+      current = { name, group };
+    } else if (lines[i].startsWith('http') && current) {
+      if (!categories[current.group]) {
+        categories[current.group] = [];
+      }
+      categories[current.group].push({
+        name: current.name,
+        url: lines[i]
       });
+      current = null;
     }
   }
-  return channels;
+  return categories;
 }
 
-/* RENDER */
-function renderChannels(channels) {
+/* RENDER CATEGORIAS + TILES */
+function renderCategories(categories) {
   content.innerHTML = '';
-  const row = document.createElement('div');
-  row.className = 'row';
 
-  channels.forEach(ch => {
-    const div = document.createElement('div');
-    div.className = 'channel';
-    div.tabIndex = 0;
-    div.textContent = ch.name;
-    div.onclick = () => window.location.href = `vlc://${ch.url}`;
-    row.appendChild(div);
+  Object.keys(categories).forEach(cat => {
+    const section = document.createElement('section');
+    section.className = 'category';
+
+    const title = document.createElement('h2');
+    title.textContent = cat;
+
+    const row = document.createElement('div');
+    row.className = 'row';
+
+    categories[cat].forEach(channel => {
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.tabIndex = 0;
+      tile.textContent = channel.name;
+
+      tile.onclick = () => {
+        window.location.href = `vlc://${channel.url}`;
+      };
+
+      row.appendChild(tile);
+    });
+
+    section.appendChild(title);
+    section.appendChild(row);
+    content.appendChild(section);
   });
-
-  content.appendChild(row);
 }
